@@ -28,6 +28,7 @@ This repository contains some submodules which you can use if the dependencies a
 ```sh
 git clone --recursive https://github.com/mmatyas/supermariowar.git
 cd supermariowar/
+patch < smw_rg353p.patch
 mkdir build
 cd build/
 
@@ -35,7 +36,6 @@ CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ \
 CFLAGS='-march=armv8-a' CXXFLAGS='-march=armv8-a' \
 PKG_CONFIG_DIR="" PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig" \
 cmake -DDISABLE_DEFAULT_CFLAGS=1 ..
-patch < smw_rg353p.patch
 
 make
 
