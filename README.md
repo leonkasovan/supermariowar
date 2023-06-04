@@ -19,7 +19,7 @@ This repo is made for handheld RG353P specific build.
 - ENet (optional, included)
 
 You can use package managers for getting these dependencies:
-- Debian-based: `apt-get install cmake libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev zlib1g-dev`
+- Debian-based: `apt-get install cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev zlib1g-dev`
 
 ### Get the code
 
@@ -47,6 +47,7 @@ sftp root@192.168.1.14 <<EOF
 cd /userdata/roms/bin
 put smw
 EOF
+chmod a+x upload.sh
 ```
 
 ## How to play
