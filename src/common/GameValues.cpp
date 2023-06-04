@@ -63,18 +63,18 @@ SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_
     }
 };
 #else
-    //left, right, jump, down, turbo, powerup, start, cancel;
-    { { {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
-            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
-            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
-            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4}
+    //left, right, jump, down, quit, powerup, start, use;
+    { {     {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21},
+            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21},
+            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21},
+            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21}
         },
 
         //up, down, left, right, select, cancel, random, fast scroll
-        {   {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
-            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
-            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
-            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3}
+        {   {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
+            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
+            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
+            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3}
         }
     }
 };
@@ -91,7 +91,7 @@ void CGameValues::init()
 {
     //set standard game values
     playercontrol[0]  = 1;
-    playercontrol[1]  = 1;
+    playercontrol[1]  = 2;
     showfps       = false;
     frameadvance    = false;
     autokill      = false;
@@ -215,7 +215,7 @@ void CGameValues::init()
     //networkhost   = false;
     //gamehost      = false;
 
-    for (short iPlayer = 0; iPlayer < 4; iPlayer++) {
+    for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
         storedpowerups[iPlayer] = -1;
         gamepowerups[iPlayer] = -1;
         teamids[iPlayer][0] = iPlayer;
@@ -225,12 +225,14 @@ void CGameValues::init()
         randomskin[iPlayer] = false;
 
         //Setup the default key/button input configurations
+        //printf("Setup the default key/button input configurations\n");
         for (short iInputType = 0; iInputType < 2; iInputType++) { //for keyboard/joystick
             inputConfiguration[iPlayer][iInputType].iDevice = iInputType - 1;
 
             for (short iInputState = 0; iInputState < 2; iInputState++) { //for game/menu
                 for (short iKey = 0; iKey < NUM_KEYS; iKey++) {
                     inputConfiguration[iPlayer][iInputType].inputGameControls[iInputState].keys[iKey] = controlkeys[iInputType][iInputState][iPlayer][iKey];
+                    //printf("iPlayer=%d iInputType=%d(%s) iInputState=%d(%s) iKey=%d => value=%ld\n",iPlayer,iInputType,iInputType==0?"keyboard":"joystick",iInputState,iInputState==0?"game":"menu",iKey, controlkeys[iInputType][iInputState][iPlayer][iKey]);
                 }
             }
         }
@@ -240,7 +242,7 @@ void CGameValues::init()
         inputConfiguration[iPlayer][1].iDevice = iPlayer;
         playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
 #else
-        playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][0];
+        playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
 #endif
     }
 }
@@ -305,6 +307,7 @@ void CGameValues::resetSecretCounters()
 
 // Read saved settings from disk
 void CGameValues::ReadBinaryConfig() {
+
     try {
         std::string options_path(GetHomeDirectory() + "options.bin");
         BinaryFile options(options_path.c_str(), "rb");
@@ -453,14 +456,23 @@ void CGameValues::ReadBinaryConfig() {
         for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
             short iDevice = controls.read_i16();
 
-#ifdef _XBOX
+//#ifdef _XBOX
             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1]; //Always use gamepads as input devices on xbox
-#else
+            //printf("src/common/GameValues.cpp: setup player input controls for game iPlayer=%d\n", iPlayer);
+/*#else
             if (iDevice >= joystickcount)
                 iDevice = DEVICE_KEYBOARD;
 
             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][iDevice == DEVICE_KEYBOARD ? 0 : 1];
-#endif
+#endif*/
+            //printf("src/common/GameValues.cpp: Loaded Setting from %s\n", controls_path.c_str());
+            // for (short iInputType = 0; iInputType < 2; iInputType++) { //for keyboard/joystick
+            //     for (short iInputState = 0; iInputState < 2; iInputState++) { //for game/menu
+            //         for (short iKey = 0; iKey < NUM_KEYS; iKey++) {
+            //             printf("iPlayer=%d iInputType=%d(%s) iInputState=%d(%s) iKey=%d => value=%ld\n",iPlayer,iInputType,iInputType==0?"keyboard":"joystick",iInputState,iInputState==0?"game":"menu",iKey, inputConfiguration[iPlayer][iInputType].inputGameControls[iInputState].keys[iKey]);
+            //         }
+            //     }
+            // }
         }
     }
     catch (std::exception const& error)

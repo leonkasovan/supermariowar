@@ -27,7 +27,7 @@ bool gfxFont::init(const std::string& filename)
     if (m_font)
         SFont_FreeFont(m_font);
 
-    cout << "loading font " << filename << " ... ";
+    //cout << "loading font " << filename << " ... ";
 
     SDL_Surface *fontsurf = IMG_Load(filename.c_str());
     if (fontsurf == NULL) {
@@ -42,7 +42,7 @@ bool gfxFont::init(const std::string& filename)
         return false;
     }
 
-    cout << "done" << endl;
+    //cout << "done" << endl;
     return true;
 }
 

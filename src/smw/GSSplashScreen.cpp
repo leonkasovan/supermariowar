@@ -312,7 +312,7 @@ void SplashScreenState::update()
         rm->menu_font_large.drawCentered(smw->ScreenWidth/2, smw->ScreenHeight * 0.875f, "Loading...");
     } else if (state == 8) {
 //            _load_drawmsg("Press Any Key To Continue");
-        rm->menu_font_large.drawCentered(smw->ScreenWidth/2, smw->ScreenHeight * 0.875f, "Press Any Key To Continue");
+        rm->menu_font_large.drawCentered(smw->ScreenWidth/2, smw->ScreenHeight * 0.875f, "Press (A) Key To Continue");
 
         eyecandy[2].cleandeadobjects();
         eyecandy[2].update();

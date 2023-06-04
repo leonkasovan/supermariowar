@@ -31,10 +31,10 @@
 #define MOUSE_RIGHT         326
 #define MOUSE_BUTTON_START  327
 
-#define JOY_STICK_1_UP      0
-#define JOY_STICK_1_DOWN    1
-#define JOY_STICK_1_LEFT    2
-#define JOY_STICK_1_RIGHT   3
+#define JOY_STICK_1_UP      25
+#define JOY_STICK_1_DOWN    26
+#define JOY_STICK_1_LEFT    27
+#define JOY_STICK_1_RIGHT   28
 
 #define JOY_STICK_2_UP      4
 #define JOY_STICK_2_DOWN    5

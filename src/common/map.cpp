@@ -620,19 +620,19 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
     mapfile.read_i32_array(version, 4);
 
     if (iReadType != read_type_summary) {
-        cout << "loading map " << file;
+        //cout << "loading map " << file;
 
         if (iReadType == read_type_preview)
-            cout << " (preview)";
+            ;//cout << " (preview)";
 
         if (VersionIsEqualOrAfter(version, 1, 6, 0, 0)) {
-            cout << " [v" << version[0] << '.' << version[1] << '.'
-                 << version[2] << '.' << version[3] << "]";
+            ;//cout << " [v" << version[0] << '.' << version[1] << '.'
+            //     << version[2] << '.' << version[3] << "]";
         }
         else
-            cout << " [v1.5]";
+            ;//cout << " [v1.5]";
 
-        cout << " ...";
+        //cout << " ...";
     }
 
     MapReader* reader = MapReader::getLoaderByVersion(version);
@@ -644,7 +644,7 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
         return;
 
     clearWarpLocks();
-    cout << " done" << endl;
+    //cout << " done" << endl;
 }
 
 void CMap::UpdateAllTileGaps()
@@ -1345,7 +1345,7 @@ void CMap::saveMap(const std::string& file)
     chmod(file.c_str(), S_IRWXU | S_IRWXG | S_IROTH);
 #endif
 
-    cout << "done" << endl;
+    //cout << "done" << endl;
 
     /*
     	//Save thumbnail

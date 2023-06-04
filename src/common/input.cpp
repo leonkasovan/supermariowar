@@ -139,6 +139,7 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 			iDeviceID = inputControls[iPlayer]->iDevice;
 		}
 
+		//printf("src/common/input.cpp: iPlayerID=%d iDeviceID=%d\n",iPlayerID,iDeviceID);
         if (iDeviceID == DEVICE_KEYBOARD) {
             if (SDL_KEYDOWN == event.type) {
                 for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {

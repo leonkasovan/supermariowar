@@ -1,16 +1,3 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c37d5c4f..d06a7495 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -17,7 +17,7 @@ set(SMW_VERSION_PATCH "0")
- #
- 
- option(USE_PNG_SAVE "Use PNG for screenshots and thumbnails" ON)
--option(NO_NETWORK "Disable all network communication" OFF)
-+option(NO_NETWORK "Disable all network communication" ON)
- option(BUILD_STATIC_LIBS "Build and link minor dependencies statically (enet, yaml-cpp)" ON)
- option(USE_SDL2_LIBS "Use SDL2 instead of SDL 1.x" ON)
- option(SDL2_USE_MIXERX "(SDL2) Use SDL Mixer X instead of SDL Mixer" OFF)
 diff --git a/src/common/GameValues.cpp b/src/common/GameValues.cpp
 index 42eb411a..53f64cdc 100644
 --- a/src/common/GameValues.cpp

@@ -56,7 +56,7 @@ void gfxSprite::freeSurface()
 //
 bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, bool fUseAccel)
 {
-    cout << "loading sprite (mode 1) " << filename << "...";
+    // cout << "loading sprite (mode 1) " << filename << "...";
 
     if (m_picture) {
         SDL_FreeSurface(m_picture);
@@ -95,7 +95,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
     m_bltrect.w = (Uint16)m_picture->w;
     m_bltrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+    //cout << "done" << endl;
     return true;
 }
 
@@ -104,7 +104,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
 //
 bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool fUseAccel)
 {
-    cout << "Loading sprite (mode 2) " << filename << " ...";
+    //cout << "Loading sprite (mode 2) " << filename << " ...";
 
     if (m_picture) {
         SDL_FreeSurface(m_picture);
@@ -148,7 +148,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
     m_bltrect.w = (Uint16)m_picture->w;
     m_bltrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+    //cout << "done" << endl;
     return true;
 }
 
@@ -157,7 +157,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
 //
 bool gfxSprite::init(const std::string& filename)
 {
-    cout << "loading sprite (mode 3) " << filename << "...";
+    // cout << "loading sprite (mode 3) " << filename << "...";
 
     if (m_picture) {
         SDL_FreeSurface(m_picture);
@@ -196,7 +196,7 @@ bool gfxSprite::init(const std::string& filename)
     m_srcrect.w = (Uint16)m_picture->w;
     m_srcrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+    //cout << "done" << endl;
     return true;
 }
 

@@ -77,7 +77,7 @@ bool sfxSound::init(const string& filename)
 	if (sfx)
 		reset();
 
-	cout << "load " << filename << "..." << endl;
+	//cout << "load " << filename << "..." << endl;
 	sfx = Mix_LoadWAV(filename.c_str());
 
     if (sfx == NULL) {
@@ -195,7 +195,7 @@ bool sfxMusic::load(const string& filename)
 	if (music)
 		reset();
 
-    cout << "load " << filename << "..." << endl;
+    //cout << "load " << filename << "..." << endl;
 	music = Mix_LoadMUS(filename.c_str());
 
     if (!music) {
