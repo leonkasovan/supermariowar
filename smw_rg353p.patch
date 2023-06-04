@@ -1,0 +1,316 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c37d5c4f..d06a7495 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,7 +17,7 @@ set(SMW_VERSION_PATCH "0")
+ #
+ 
+ option(USE_PNG_SAVE "Use PNG for screenshots and thumbnails" ON)
+-option(NO_NETWORK "Disable all network communication" OFF)
++option(NO_NETWORK "Disable all network communication" ON)
+ option(BUILD_STATIC_LIBS "Build and link minor dependencies statically (enet, yaml-cpp)" ON)
+ option(USE_SDL2_LIBS "Use SDL2 instead of SDL 1.x" ON)
+ option(SDL2_USE_MIXERX "(SDL2) Use SDL Mixer X instead of SDL Mixer" OFF)
+diff --git a/src/common/GameValues.cpp b/src/common/GameValues.cpp
+index 42eb411a..53f64cdc 100644
+--- a/src/common/GameValues.cpp
++++ b/src/common/GameValues.cpp
+@@ -63,18 +63,18 @@ SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_
+     }
+ };
+ #else
+-    //left, right, jump, down, turbo, powerup, start, cancel;
+-    { { {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
+-            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
+-            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
+-            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4}
++    //left, right, jump, down, quit, powerup, start, use;
++    { {     {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21},
++            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21},
++            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21},
++            {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, 20, 21}
+         },
+ 
+         //up, down, left, right, select, cancel, random, fast scroll
+-        {   {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
+-            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
+-            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
+-            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3}
++        {   {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
++            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
++            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
++            {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START + 1, JOY_BUTTON_START, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3}
+         }
+     }
+ };
+@@ -91,7 +91,7 @@ void CGameValues::init()
+ {
+     //set standard game values
+     playercontrol[0]  = 1;
+-    playercontrol[1]  = 1;
++    playercontrol[1]  = 2;
+     showfps       = false;
+     frameadvance    = false;
+     autokill      = false;
+@@ -215,7 +215,7 @@ void CGameValues::init()
+     //networkhost   = false;
+     //gamehost      = false;
+ 
+-    for (short iPlayer = 0; iPlayer < 4; iPlayer++) {
++    for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
+         storedpowerups[iPlayer] = -1;
+         gamepowerups[iPlayer] = -1;
+         teamids[iPlayer][0] = iPlayer;
+@@ -225,12 +225,14 @@ void CGameValues::init()
+         randomskin[iPlayer] = false;
+ 
+         //Setup the default key/button input configurations
++        //printf("Setup the default key/button input configurations\n");
+         for (short iInputType = 0; iInputType < 2; iInputType++) { //for keyboard/joystick
+             inputConfiguration[iPlayer][iInputType].iDevice = iInputType - 1;
+ 
+             for (short iInputState = 0; iInputState < 2; iInputState++) { //for game/menu
+                 for (short iKey = 0; iKey < NUM_KEYS; iKey++) {
+                     inputConfiguration[iPlayer][iInputType].inputGameControls[iInputState].keys[iKey] = controlkeys[iInputType][iInputState][iPlayer][iKey];
++                    //printf("iPlayer=%d iInputType=%d(%s) iInputState=%d(%s) iKey=%d => value=%ld\n",iPlayer,iInputType,iInputType==0?"keyboard":"joystick",iInputState,iInputState==0?"game":"menu",iKey, controlkeys[iInputType][iInputState][iPlayer][iKey]);
+                 }
+             }
+         }
+@@ -240,7 +242,7 @@ void CGameValues::init()
+         inputConfiguration[iPlayer][1].iDevice = iPlayer;
+         playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
+ #else
+-        playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][0];
++        playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
+ #endif
+     }
+ }
+@@ -305,6 +307,7 @@ void CGameValues::resetSecretCounters()
+ 
+ // Read saved settings from disk
+ void CGameValues::ReadBinaryConfig() {
++
+     try {
+         std::string options_path(GetHomeDirectory() + "options.bin");
+         BinaryFile options(options_path.c_str(), "rb");
+@@ -453,14 +456,23 @@ void CGameValues::ReadBinaryConfig() {
+         for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
+             short iDevice = controls.read_i16();
+ 
+-#ifdef _XBOX
++//#ifdef _XBOX
+             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1]; //Always use gamepads as input devices on xbox
+-#else
++            //printf("src/common/GameValues.cpp: setup player input controls for game iPlayer=%d\n", iPlayer);
++/*#else
+             if (iDevice >= joystickcount)
+                 iDevice = DEVICE_KEYBOARD;
+ 
+             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][iDevice == DEVICE_KEYBOARD ? 0 : 1];
+-#endif
++#endif*/
++            //printf("src/common/GameValues.cpp: Loaded Setting from %s\n", controls_path.c_str());
++            // for (short iInputType = 0; iInputType < 2; iInputType++) { //for keyboard/joystick
++            //     for (short iInputState = 0; iInputState < 2; iInputState++) { //for game/menu
++            //         for (short iKey = 0; iKey < NUM_KEYS; iKey++) {
++            //             printf("iPlayer=%d iInputType=%d(%s) iInputState=%d(%s) iKey=%d => value=%ld\n",iPlayer,iInputType,iInputType==0?"keyboard":"joystick",iInputState,iInputState==0?"game":"menu",iKey, inputConfiguration[iPlayer][iInputType].inputGameControls[iInputState].keys[iKey]);
++            //         }
++            //     }
++            // }
+         }
+     }
+     catch (std::exception const& error)
+diff --git a/src/common/gfx/gfxFont.cpp b/src/common/gfx/gfxFont.cpp
+index 3fa92c9a..4c273d51 100644
+--- a/src/common/gfx/gfxFont.cpp
++++ b/src/common/gfx/gfxFont.cpp
+@@ -27,7 +27,7 @@ bool gfxFont::init(const std::string& filename)
+     if (m_font)
+         SFont_FreeFont(m_font);
+ 
+-    cout << "loading font " << filename << " ... ";
++    //cout << "loading font " << filename << " ... ";
+ 
+     SDL_Surface *fontsurf = IMG_Load(filename.c_str());
+     if (fontsurf == NULL) {
+@@ -42,7 +42,7 @@ bool gfxFont::init(const std::string& filename)
+         return false;
+     }
+ 
+-    cout << "done" << endl;
++    //cout << "done" << endl;
+     return true;
+ }
+ 
+diff --git a/src/common/gfx/gfxSprite.cpp b/src/common/gfx/gfxSprite.cpp
+index 7f77b8ec..999288a8 100644
+--- a/src/common/gfx/gfxSprite.cpp
++++ b/src/common/gfx/gfxSprite.cpp
+@@ -56,7 +56,7 @@ void gfxSprite::freeSurface()
+ //
+ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, bool fUseAccel)
+ {
+-    cout << "loading sprite (mode 1) " << filename << "...";
++    // cout << "loading sprite (mode 1) " << filename << "...";
+ 
+     if (m_picture) {
+         SDL_FreeSurface(m_picture);
+@@ -95,7 +95,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
+     m_bltrect.w = (Uint16)m_picture->w;
+     m_bltrect.h = (Uint16)m_picture->h;
+ 
+-    cout << "done" << endl;
++    //cout << "done" << endl;
+     return true;
+ }
+ 
+@@ -104,7 +104,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
+ //
+ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool fUseAccel)
+ {
+-    cout << "Loading sprite (mode 2) " << filename << " ...";
++    //cout << "Loading sprite (mode 2) " << filename << " ...";
+ 
+     if (m_picture) {
+         SDL_FreeSurface(m_picture);
+@@ -148,7 +148,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
+     m_bltrect.w = (Uint16)m_picture->w;
+     m_bltrect.h = (Uint16)m_picture->h;
+ 
+-    cout << "done" << endl;
++    //cout << "done" << endl;
+     return true;
+ }
+ 
+@@ -157,7 +157,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
+ //
+ bool gfxSprite::init(const std::string& filename)
+ {
+-    cout << "loading sprite (mode 3) " << filename << "...";
++    // cout << "loading sprite (mode 3) " << filename << "...";
+ 
+     if (m_picture) {
+         SDL_FreeSurface(m_picture);
+@@ -196,7 +196,7 @@ bool gfxSprite::init(const std::string& filename)
+     m_srcrect.w = (Uint16)m_picture->w;
+     m_srcrect.h = (Uint16)m_picture->h;
+ 
+-    cout << "done" << endl;
++    //cout << "done" << endl;
+     return true;
+ }
+ 
+diff --git a/src/common/input.cpp b/src/common/input.cpp
+index b6011f1f..8fb46289 100644
+--- a/src/common/input.cpp
++++ b/src/common/input.cpp
+@@ -139,6 +139,7 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
+ 			iDeviceID = inputControls[iPlayer]->iDevice;
+ 		}
+ 
++		//printf("src/common/input.cpp: iPlayerID=%d iDeviceID=%d\n",iPlayerID,iDeviceID);
+         if (iDeviceID == DEVICE_KEYBOARD) {
+             if (SDL_KEYDOWN == event.type) {
+                 for (int iKey = 0; iKey < NUM_KEYS && !fFound; iKey++) {
+diff --git a/src/common/input.h b/src/common/input.h
+index 13896d5b..21ae29b7 100644
+--- a/src/common/input.h
++++ b/src/common/input.h
+@@ -31,10 +31,10 @@
+ #define MOUSE_RIGHT         326
+ #define MOUSE_BUTTON_START  327
+ 
+-#define JOY_STICK_1_UP      0
+-#define JOY_STICK_1_DOWN    1
+-#define JOY_STICK_1_LEFT    2
+-#define JOY_STICK_1_RIGHT   3
++#define JOY_STICK_1_UP      25
++#define JOY_STICK_1_DOWN    26
++#define JOY_STICK_1_LEFT    27
++#define JOY_STICK_1_RIGHT   28
+ 
+ #define JOY_STICK_2_UP      4
+ #define JOY_STICK_2_DOWN    5
+diff --git a/src/common/map.cpp b/src/common/map.cpp
+index 23d0bf42..b24bbbec 100644
+--- a/src/common/map.cpp
++++ b/src/common/map.cpp
+@@ -620,19 +620,19 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
+     mapfile.read_i32_array(version, 4);
+ 
+     if (iReadType != read_type_summary) {
+-        cout << "loading map " << file;
++        //cout << "loading map " << file;
+ 
+         if (iReadType == read_type_preview)
+-            cout << " (preview)";
++            ;//cout << " (preview)";
+ 
+         if (VersionIsEqualOrAfter(version, 1, 6, 0, 0)) {
+-            cout << " [v" << version[0] << '.' << version[1] << '.'
+-                 << version[2] << '.' << version[3] << "]";
++            ;//cout << " [v" << version[0] << '.' << version[1] << '.'
++            //     << version[2] << '.' << version[3] << "]";
+         }
+         else
+-            cout << " [v1.5]";
++            ;//cout << " [v1.5]";
+ 
+-        cout << " ...";
++        //cout << " ...";
+     }
+ 
+     MapReader* reader = MapReader::getLoaderByVersion(version);
+@@ -644,7 +644,7 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
+         return;
+ 
+     clearWarpLocks();
+-    cout << " done" << endl;
++    //cout << " done" << endl;
+ }
+ 
+ void CMap::UpdateAllTileGaps()
+@@ -1345,7 +1345,7 @@ void CMap::saveMap(const std::string& file)
+     chmod(file.c_str(), S_IRWXU | S_IRWXG | S_IROTH);
+ #endif
+ 
+-    cout << "done" << endl;
++    //cout << "done" << endl;
+ 
+     /*
+     	//Save thumbnail
+diff --git a/src/common/sfx.cpp b/src/common/sfx.cpp
+index 63ac4197..d640a183 100644
+--- a/src/common/sfx.cpp
++++ b/src/common/sfx.cpp
+@@ -77,7 +77,7 @@ bool sfxSound::init(const string& filename)
+ 	if (sfx)
+ 		reset();
+ 
+-	cout << "load " << filename << "..." << endl;
++	//cout << "load " << filename << "..." << endl;
+ 	sfx = Mix_LoadWAV(filename.c_str());
+ 
+     if (sfx == NULL) {
+@@ -195,7 +195,7 @@ bool sfxMusic::load(const string& filename)
+ 	if (music)
+ 		reset();
+ 
+-    cout << "load " << filename << "..." << endl;
++    //cout << "load " << filename << "..." << endl;
+ 	music = Mix_LoadMUS(filename.c_str());
+ 
+     if (!music) {
+diff --git a/src/smw/GSSplashScreen.cpp b/src/smw/GSSplashScreen.cpp
+index 778af7b5..51b09581 100644
+--- a/src/smw/GSSplashScreen.cpp
++++ b/src/smw/GSSplashScreen.cpp
+@@ -312,7 +312,7 @@ void SplashScreenState::update()
+         rm->menu_font_large.drawCentered(smw->ScreenWidth/2, smw->ScreenHeight * 0.875f, "Loading...");
+     } else if (state == 8) {
+ //            _load_drawmsg("Press Any Key To Continue");
+-        rm->menu_font_large.drawCentered(smw->ScreenWidth/2, smw->ScreenHeight * 0.875f, "Press Any Key To Continue");
++        rm->menu_font_large.drawCentered(smw->ScreenWidth/2, smw->ScreenHeight * 0.875f, "Press (A) Key To Continue");
+ 
+         eyecandy[2].cleandeadobjects();
+         eyecandy[2].update();
