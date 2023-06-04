@@ -28,7 +28,7 @@ This repository contains some submodules which you can use if the dependencies a
 ```sh
 git clone --recursive https://github.com/mmatyas/supermariowar.git
 cd supermariowar/
-patch < smw_rg353p.patch
+git apply smw_rg353p.patch
 mkdir build
 cd build/
 
@@ -50,6 +50,16 @@ EOF
 ```
 
 ## How to play
+
+In Menu:  
+Press button (A) to accept.  
+Press button (B) to cancel/back.  
+
+In Game:  
+(A) to use power / throw / pick a thing.  
+(B) to jump  
+(START) to quit  
+(SELECT) to pause  
 
 Please see documentation in the docs/ directory.
 
