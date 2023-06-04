@@ -38,6 +38,15 @@ cmake -DDISABLE_DEFAULT_CFLAGS=1 ..
 patch < smw_rg353p.patch
 
 make
+
+nano upload.sh
+#!/bin/bash
+cd Binaries/Release/
+aarch64-linux-gnu-strip -s smw
+sftp root@192.168.1.14 <<EOF
+cd /userdata/roms/bin
+put smw
+EOF
 ```
 
 ## How to play
